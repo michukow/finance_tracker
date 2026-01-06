@@ -1,20 +1,21 @@
 # Personal finance tracker - work in progres
+import json
 
 transactions=[]
 
 def add():
 	print("Adding transaction...")
 	amount = float(input("Amount: "))
-	type = str(input("Type (income/expense): ")).lower()
 	description = input("Description: ")
 
 	transaction = {
 		"amount": amount,
-		"type": type,
 		"description": description
 	}
 
 	transactions.append(transaction)
+	with open('transactions.json','w',encoding='utf-8') as file:
+		json.dump(transactions, file, indent=4, ensure_ascii=False)					
 	print("Transaction added.\n")
 
 def show():
@@ -22,9 +23,14 @@ def show():
 	if not transactions:
 		print("No transactions yet.\n")
 		return
-
-	for i,t in enumerate(transactions, start=1):
-		print(f"{i}. {t['type']} | {t['amount']} | {t['description']}\n")
+	with open('transactions.json','r',encoding='utf-8') as file:
+		data=json.load(file)
+		if not data:
+			print("No transactions yet.\n")
+			return
+		else:
+			for i,t in enumerate(data, start=1):
+				print(f"{i}. {t['amount']} | {t['description']}")
 
 def main():
 	while True:
@@ -33,7 +39,7 @@ def main():
 		print("2. Show transactions")
 		print("3. Exit")
 
-		choice = input("Choose option: ")
+		choice=input("Choose option: ")
 
 		if choice=="1":
 			add()
