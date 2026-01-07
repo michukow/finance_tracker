@@ -3,5 +3,11 @@
 Simple personal finance tracker. 
 Work in progress
 
-## Features
+## Technologies
 - Python
+- JOSN
+
+## Features
+- adding transactions
+- saving to JSON file
+- showing list of transactions
