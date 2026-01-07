@@ -11,3 +11,4 @@ Work in progress
 - adding transactions
 - saving to JSON file
 - showing list of transactions
+- checking current balance
