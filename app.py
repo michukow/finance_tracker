@@ -29,9 +29,11 @@ def show():
     print("Showing transactions...")
     with open("transactions.json","r",encoding="utf-8") as file:
         data=json.load(file)
+
     if not isinstance(data, list) or not data:
         print("No transactions yet.\n")
         return
+
     for i, t in enumerate(data,start=1):
         print(f"{i}. {t['amount']} | {t['description']}")
     print()
@@ -40,6 +42,7 @@ def show():
 def balance():
 	with open('transactions.json','r',encoding='utf-8') as file:
 		data=json.load(file)
+
 		if not data:
 			print("No transactions yet.\n")
 			return
@@ -47,13 +50,42 @@ def balance():
 			total = sum(t["amount"] for t in data)
 			print(f"Current balance: {total:.2f}\n")
 
+def delete():
+    with open("transactions.json","r",encoding="utf-8")as file:
+        data=json.load(file)
+
+    if not data:
+        print("No transactions.\n")
+        return
+
+    for i,t in enumerate(data,start=1):
+        print(f"{i}. {t['amount']} | {t['description']}")
+
+    try:
+        index=int(input("Enter transaction number to delete: ")) - 1
+        if index<0 or index>=len(data):
+            print("Invalid number.\n")
+            return
+    except ValueError:
+        print("Invalid input.\n")
+        return
+
+    removed=data.pop(index)
+
+    with open("transactions.json","w",encoding="utf-8") as file:
+        json.dump(data,file,indent=4,ensure_ascii=False)
+
+    print(f"Removed: {removed['amount']} | {removed['description']}\n")
+
 def main():
 	while True:
 		print("=== MENU ===")
 		print("1. Add transaction")
 		print("2. Show transactions")
 		print("3. Show balance")
-		print("4. Exit")
+		print("4. Delete transaction")
+		print("5. Exit")
+		print()
 
 		choice=input("Choose option: ")
 
@@ -64,6 +96,8 @@ def main():
 		elif choice=="3":
 			balance()
 		elif choice=="4":
+			delete()
+		elif choice=="5":
 			print("Exiting.")
 			break
 		else:

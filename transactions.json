@@ -1,14 +1,14 @@
 [
     {
-        "amount": -40.0,
-        "description": "Water bill"
-    },
-    {
         "amount": -50.0,
         "description": "Food"
     },
     {
         "amount": 500.0,
         "description": "Salary"
+    },
+    {
+        "amount": -50.0,
+        "description": "Alcohol"
     }
 ]
