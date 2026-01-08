@@ -11,4 +11,5 @@ Work in progress
 - adding transactions
 - saving to JSON file
 - showing list of transactions
+- deleting specific transaction
 - checking current balance
