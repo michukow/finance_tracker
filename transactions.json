@@ -10,5 +10,9 @@
     {
         "amount": -50.0,
         "description": "Alcohol"
+    },
+    {
+        "amount": 70.0,
+        "description": "Tip"
     }
 ]

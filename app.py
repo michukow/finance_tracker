@@ -1,17 +1,17 @@
 # Personal finance tracker - work in progres
 import json
 
-transactions=[]
+class Transaction:
+    def __init__(self,amount,description):
+        self.amount=amount
+        self.description=description
 
 def add():
 	print("Adding transaction...")
 	amount=float(input("Amount: "))
 	description=input("Description: ")
 
-	transaction={
-		"amount":amount,
-		"description":description
-	}
+	transaction=Transaction(amount,description)
 
 	try:
 		with open("transactions.json","r",encoding="utf-8") as file:
@@ -20,7 +20,7 @@ def add():
 				data=[]
 	except FileNotFoundError:
 		data=[]
-	data.append(transaction)
+	data.append(transaction.__dict__)
 	with open("transactions.json","w",encoding="utf-8") as file:
 		json.dump(data,file,indent=4,ensure_ascii=False)
 	print("Transaction added.\n")
