@@ -11,7 +11,7 @@ class Transaction:
     def to_dict(self):
     	return self.__dict__
 
-    def show(self):
+    def info(self):
     	print(f"{self.amount} | {self.description} | {self.date}")
 
 def add():
@@ -47,9 +47,7 @@ def show():
     for i,t in enumerate(data,start=1):
     	transaction=Transaction(t["amount"], t["description"], t["date"])
     	print(f"{i}. ",end="")
-    	transaction.show()
-
-
+    	transaction.info()
 
 def balance():
 	with open('transactions.json','r',encoding='utf-8') as file:
@@ -63,31 +61,34 @@ def balance():
 			print(f"Current balance: {total:.2f}\n")
 
 def delete():
-    with open("transactions.json","r",encoding="utf-8")as file:
-        data=json.load(file)
+	with open("transactions.json","r",encoding="utf-8")as file:
+		data=json.load(file)
 
-    if not data:
-        print("No transactions.\n")
-        return
+	if not data:
+		print("No transactions.\n")
+		return
 
-    for i,t in enumerate(data,start=1):
-        print(f"{i}. {t['amount']} | {t['description']} | {t['date']}")
+	for i,t in enumerate(data,start=1):
+		transaction=Transaction(t["amount"], t["description"], t["date"])
+		print(f"{i}. ",end="")
+		transaction.info()
 
-    try:
-        index=int(input("Enter transaction number to delete: ")) - 1
-        if index<0 or index>=len(data):
-            print("Invalid number.\n")
-            return
-    except ValueError:
-        print("Invalid input.\n")
-        return
+	try:
+		index=int(input("Enter transaction number to delete: ")) - 1
+		if index<0 or index>=len(data):
+			print("Invalid number.\n")
+			return
+	except ValueError:
+		print("Invalid input.\n")
+		return
 
-    removed=data.pop(index)
+	removed=data.pop(index)
 
-    with open("transactions.json","w",encoding="utf-8") as file:
-        json.dump(data,file,indent=4,ensure_ascii=False)
+	with open("transactions.json","w",encoding="utf-8") as file:
+		json.dump(data,file,indent=4,ensure_ascii=False)
 
-    print(f"Removed: {removed['amount']} | {removed['description']}\n")
+	transaction=Transaction(t["amount"], t["description"], t["date"])
+	print(f"Removed: {transaction.info()}")
 
 def main():
 	while True:
