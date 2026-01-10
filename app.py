@@ -45,8 +45,8 @@ def show():
         return
 
     for i,t in enumerate(data,start=1):
-    	transaction = Transaction(t["amount"], t["description"], t["date"])
-    	print(f"{i}. ", end="")
+    	transaction=Transaction(t["amount"], t["description"], t["date"])
+    	print(f"{i}. ",end="")
     	transaction.show()
 
 

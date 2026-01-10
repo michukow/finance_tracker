@@ -4,9 +4,8 @@ Simple personal finance tracker.
 Work in progress
 
 ## Technologies
-- Python
-- JOSN
-- Classes
+- Python (Classes)
+- JSON
 
 ## Features
 - adding transactions
