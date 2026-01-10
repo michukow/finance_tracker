@@ -3,16 +3,17 @@ import json
 from datetime import datetime
 
 class Transaction:
-    def __init__(self,amount,description,date):
+    def __init__(self,amount,description,date,category):
         self.amount=amount
         self.description=description
         self.date=date
+        self.category=category
 
     def to_dict(self):
     	return self.__dict__
 
     def info(self):
-    	print(f"{self.amount} | {self.description} | {self.date}")
+    	print(f"{self.category} || {self.amount} | {self.description} | {self.date}")
 
 def add():
 	print("Adding transaction...")
@@ -32,7 +33,13 @@ def add():
 
 	date=datetime.now()
 	date=date.strftime("%Y-%m-%d %H:%M:%S")
-	transaction=Transaction(amount,description,date)
+
+	if amount>0:
+		category="INCOME"
+	else:
+		category="EXPENSE"
+
+	transaction=Transaction(amount,description,date,category)
 
 	try:
 		with open("transactions.json","r",encoding="utf-8") as file:
@@ -56,7 +63,7 @@ def show():
         return
 
     for i,t in enumerate(data,start=1):
-    	transaction=Transaction(t["amount"], t["description"], t["date"])
+    	transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
     	print(f"{i}. ",end="")
     	transaction.info()
 
@@ -80,7 +87,7 @@ def delete():
 		return
 
 	for i,t in enumerate(data,start=1):
-		transaction=Transaction(t["amount"], t["description"], t["date"])
+		transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
 		print(f"{i}. ",end="")
 		transaction.info()
 
@@ -98,8 +105,8 @@ def delete():
 	with open("transactions.json","w",encoding="utf-8") as file:
 		json.dump(data,file,indent=4,ensure_ascii=False)
 
-	transaction=Transaction(t["amount"], t["description"], t["date"])
-	print(f"Removed: {transaction.info()}")
+	transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+	print(f"Transaction was removed")
 
 def main():
 	while True:
