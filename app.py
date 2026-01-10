@@ -16,8 +16,19 @@ class Transaction:
 
 def add():
 	print("Adding transaction...")
-	amount=float(input("Amount: "))
-	description=input("Description: ")
+	while True:
+		amount=float(input("Amount: "))
+		if amount==0 or not amount:
+			print("Insert valid amount")
+			continue 
+		break
+		
+	while True:		
+		description=input("Description: ")
+		if description=="":
+			print("The description should not be empty.")
+			continue
+		break
 
 	date=datetime.now()
 	date=date.strftime("%Y-%m-%d %H:%M:%S")
