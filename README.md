@@ -6,6 +6,7 @@ Work in progress
 ## Technologies
 - Python
 - JOSN
+- Classes
 
 ## Features
 - adding transactions

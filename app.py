@@ -1,10 +1,12 @@
 # Personal finance tracker - work in progres
 import json
+from datetime import datetime
 
 class Transaction:
-    def __init__(self,amount,description):
+    def __init__(self,amount,description,date):
         self.amount=amount
         self.description=description
+        self.date=date
 
     def to_dict(self):
     	return self.__dict__
@@ -14,7 +16,9 @@ def add():
 	amount=float(input("Amount: "))
 	description=input("Description: ")
 
-	transaction=Transaction(amount,description)
+	date=datetime.now()
+	date=date.strftime("%Y-%m-%d %H:%M:%S")
+	transaction=Transaction(amount,description,date)
 
 	try:
 		with open("transactions.json","r",encoding="utf-8") as file:
@@ -38,7 +42,7 @@ def show():
         return
 
     for i, t in enumerate(data,start=1):
-        print(f"{i}. {t['amount']} | {t['description']}")
+        print(f"{i}. {t['amount']} | {t['description']} | {t['date']}")
     print()
 
 
@@ -62,7 +66,7 @@ def delete():
         return
 
     for i,t in enumerate(data,start=1):
-        print(f"{i}. {t['amount']} | {t['description']}")
+        print(f"{i}. {t['amount']} | {t['description']} | {t['date']}")
 
     try:
         index=int(input("Enter transaction number to delete: ")) - 1

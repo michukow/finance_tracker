@@ -1,18 +1,7 @@
 [
     {
         "amount": -50.0,
-        "description": "Food"
-    },
-    {
-        "amount": 500.0,
-        "description": "Salary"
-    },
-    {
-        "amount": -50.0,
-        "description": "Alcohol"
-    },
-    {
-        "amount": 70.0,
-        "description": "Tip"
+        "description": "Food",
+        "date": "2026-01-10 12:46:45"
     }
 ]
