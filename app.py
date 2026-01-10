@@ -11,6 +11,9 @@ class Transaction:
     def to_dict(self):
     	return self.__dict__
 
+    def show(self):
+    	print(f"{self.amount} | {self.description} | {self.date}")
+
 def add():
 	print("Adding transaction...")
 	amount=float(input("Amount: "))
@@ -41,9 +44,11 @@ def show():
         print("No transactions yet.\n")
         return
 
-    for i, t in enumerate(data,start=1):
-        print(f"{i}. {t['amount']} | {t['description']} | {t['date']}")
-    print()
+    for i,t in enumerate(data,start=1):
+    	transaction = Transaction(t["amount"], t["description"], t["date"])
+    	print(f"{i}. ", end="")
+    	transaction.show()
+
 
 
 def balance():
@@ -86,6 +91,7 @@ def delete():
 
 def main():
 	while True:
+		print()
 		print("=== MENU ===")
 		print("1. Add transaction")
 		print("2. Show transactions")
