@@ -22,7 +22,7 @@ def add():
 			print("Insert valid amount")
 			continue 
 		break
-		
+
 	while True:		
 		description=input("Description: ")
 		if description=="":
@@ -112,7 +112,7 @@ def main():
 		print("5. Exit")
 		print()
 
-		choice=input("Choose option: ")
+		choice=str(input("Choose option: "))
 
 		if choice=="1":
 			add()
@@ -126,7 +126,7 @@ def main():
 			print("Exiting.")
 			break
 		else:
-			print("Invalid option.\n")
+			print("Invalid option. Try again! \n")
 
 if __name__ == "__main__":
     main()
