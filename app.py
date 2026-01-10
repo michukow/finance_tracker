@@ -6,6 +6,9 @@ class Transaction:
         self.amount=amount
         self.description=description
 
+    def to_dict(self):
+    	return self.__dict__
+
 def add():
 	print("Adding transaction...")
 	amount=float(input("Amount: "))
@@ -20,7 +23,7 @@ def add():
 				data=[]
 	except FileNotFoundError:
 		data=[]
-	data.append(transaction.__dict__)
+	data.append(transaction.to_dict())
 	with open("transactions.json","w",encoding="utf-8") as file:
 		json.dump(data,file,indent=4,ensure_ascii=False)
 	print("Transaction added.\n")
