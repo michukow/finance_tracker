@@ -39,8 +39,7 @@ def add():
 		except ValueError:
 			print("Insert a number.")
 
-	date=datetime.now()
-	date=date.strftime("%Y-%m-%d %H:%M:%S")
+	date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 	if amount>0:
 		category="INCOME"
@@ -98,44 +97,88 @@ def balance():
 			print("File not found.")
 
 def delete():
-	try:
-		with open("transactions.json","r",encoding="utf-8")as file:
-			data=json.load(file)
+    try:
+        with open("transactions.json","r",encoding="utf-8") as file:
+            data=json.load(file)
 
-		if not data:
-			print("No transactions.\n")
-			return
+        if not data:
+            print("No transactions.")
+            return
 
-		for i,t in enumerate(data,start=1):
-			transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
-			print(f"{i}. ",end="")
-			transaction.info()
+        for i, t in enumerate(data,start=1):
+            transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+            print(f"{i}. ",end="")
+            transaction.info()
 
-		try:
-			index=int(input("Enter transaction number to delete: "))-1
-			if index<0 or index>=len(data):
-				print("Invalid number.\n")
-				return
-		except ValueError:
-			print("Invalid input.\n")
-			return
+        while True:
+            try:
+                i=int(input("Enter transaction number to delete: "))-1
+                if i<0 or i>=len(data):
+                    print("Invalid number. Try again.")
+                    continue
+                break
+            except ValueError:
+                print("Please enter a number.")
 
-		removed=data.pop(index)
+        removed=data.pop(i)
 
-		try:
-			with open("transactions.json","w",encoding="utf-8") as file:
-				json.dump(data,file,indent=4,ensure_ascii=False)
+        with open("transactions.json","w",encoding="utf-8") as file:
+            json.dump(data,file,indent=4,ensure_ascii=False)
 
-				for i,t in enumerate(data,start=1):
-					transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
-				print(f"Transaction was removed.")
+        print("Transaction removed.")
 
-		except FileNotFoundError:
-			print("File not found.")
+    except FileNotFoundError:
+        print("File not found.")
 
-	except FileNotFoundError:
-		print("File not found.")
+def update():
+    try:
+        with open("transactions.json","r",encoding="utf-8") as file:
+            data=json.load(file)
 
+        if not data:
+            print("No transactions.")
+            return
+
+        for i,t in enumerate(data,start=1):
+            transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+            print(f"{i}. ",end="")
+            transaction.info()
+
+        while True:
+            try:
+                i=int(input("Enter transaction number to edit: "))-1
+                if i<0 or i>=len(data):
+                    print("Invalid number. Try again.")
+                    continue
+                break
+            except ValueError:
+                print("Please enter a number.")
+
+        old=data[i]
+
+        new_amount=input("New amount OR press Enter to keep: ")
+        if new_amount!= "":
+            try:
+                old["amount"]=float(new_amount)
+                old["category"]="INCOME" if old["amount"]>0 else "EXPENSE"
+            except ValueError:
+                print("Invalid amount.")
+                return
+
+
+        new_description=input("New description OR press Enter to keep: ")
+        if new_description!="":
+            old["description"]=new_description
+
+        old["date"]=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        with open("transactions.json","w",encoding="utf-8") as file:
+            json.dump(data,file,indent=4,ensure_ascii=False)
+
+        print("Transaction updated.")
+
+    except FileNotFoundError:
+        print("File not found.")
 
 
 def chart():
@@ -172,8 +215,9 @@ def main():
 		print("2. Show transactions")
 		print("3. Show balance")
 		print("4. Delete transaction")
-		print("5. Draw the chart")
-		print("6. Exit")
+		print("5. Update specific transaction")
+		print("6. Draw the chart")
+		print("7. Exit")
 		print()
 
 		choice=str(input("Choose option: "))
@@ -187,8 +231,10 @@ def main():
 		elif choice=="4":
 			delete()
 		elif choice=="5":
-			chart()
+			update()
 		elif choice=="6":
+			chart()
+		elif choice=="7":
 			break
 		else:
 			print("Invalid option. Try again! \n")
