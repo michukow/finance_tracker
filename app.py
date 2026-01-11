@@ -3,17 +3,17 @@ import json
 from datetime import datetime
 
 class Transaction:
-    def __init__(self,amount,description,date,category):
-        self.amount=amount
-        self.description=description
-        self.date=date
-        self.category=category
+	def __init__(self,amount,description,date,category):
+		self.amount=amount
+		self.description=description
+		self.date=date
+		self.category=category
 
-    def to_dict(self):
-    	return self.__dict__
+	def to_dict(self):
+		return self.__dict__
 
-    def info(self):
-    	print(f"{self.category} || {self.amount} | {self.description} | {self.date}")
+	def info(self):
+		print(f"{self.category} || {self.amount} | {self.description} | {self.date}")
 
 def add():
 	print("Adding transaction...")
@@ -49,64 +49,91 @@ def add():
 	except FileNotFoundError:
 		data=[]
 	data.append(transaction.to_dict())
-	with open("transactions.json","w",encoding="utf-8") as file:
-		json.dump(data,file,indent=4,ensure_ascii=False)
-	print("Transaction added.\n")
+	try:
+		with open("transactions.json","w",encoding="utf-8") as file:
+			json.dump(data,file,indent=4,ensure_ascii=False)
+		print("Transaction added.\n")
+	except FileNotFoundError:
+		print("File not found.")
 
 def show():
-    print("Showing transactions...")
-    with open("transactions.json","r",encoding="utf-8") as file:
-        data=json.load(file)
+	print("Showing transactions...")
+	try:
+		with open("transactions.json","r",encoding="utf-8") as file:
+			data=json.load(file)
 
-    if not isinstance(data, list) or not data:
-        print("No transactions yet.\n")
-        return
-
-    for i,t in enumerate(data,start=1):
-    	transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
-    	print(f"{i}. ",end="")
-    	transaction.info()
-
-def balance():
-	with open('transactions.json','r',encoding='utf-8') as file:
-		data=json.load(file)
-
-		if not data:
+		if not isinstance(data, list) or not data:
 			print("No transactions yet.\n")
 			return
-		else:
-			total = sum(t["amount"] for t in data)
-			print(f"Current balance: {total:.2f}\n")
+
+		for i,t in enumerate(data,start=1):
+			transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+			print(f"{i}. ",end="")
+			transaction.info()
+
+	except FileNotFoundError:
+			print("File not found.")
+
+def balance():
+	try:
+		with open('transactions.json','r',encoding='utf-8') as file:
+			data=json.load(file)
+
+			if not data:
+				print("No transactions yet.\n")
+				return
+			else:
+				total = sum(t["amount"] for t in data)
+				print(f"Current balance: {total:.2f}\n")
+
+	except FileNotFoundError:
+			print("File not found.")
 
 def delete():
-	with open("transactions.json","r",encoding="utf-8")as file:
-		data=json.load(file)
-
-	if not data:
-		print("No transactions.\n")
-		return
-
-	for i,t in enumerate(data,start=1):
-		transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
-		print(f"{i}. ",end="")
-		transaction.info()
-
 	try:
-		index=int(input("Enter transaction number to delete: ")) - 1
-		if index<0 or index>=len(data):
-			print("Invalid number.\n")
+		with open("transactions.json","r",encoding="utf-8")as file:
+			data=json.load(file)
+
+		if not data:
+			print("No transactions.\n")
 			return
-	except ValueError:
-		print("Invalid input.\n")
-		return
 
-	removed=data.pop(index)
+		for i,t in enumerate(data,start=1):
+			transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+			print(f"{i}. ",end="")
+			transaction.info()
 
-	with open("transactions.json","w",encoding="utf-8") as file:
-		json.dump(data,file,indent=4,ensure_ascii=False)
+		try:
+			index=int(input("Enter transaction number to delete: "))-1
+			if index<0 or index>=len(data):
+				print("Invalid number.\n")
+				return
+		except ValueError:
+			print("Invalid input.\n")
+			return
 
-	transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
-	print(f"Transaction was removed")
+		removed=data.pop(index)
+
+		try:
+			with open("transactions.json","w",encoding="utf-8") as file:
+				json.dump(data,file,indent=4,ensure_ascii=False)
+
+				transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+				print(f"Transaction was removed")
+
+		except FileNotFoundError:
+			print("File not found.")
+
+	except FileNotFoundError:
+		print("File not found.")
+
+#def csv_export():
+	#try:
+		#with open('transactions.json','w',encoding='utf-8') as file:
+
+	#except FileNotFoundError:
+		#print("File not found.")
+
 
 def main():
 	while True:
