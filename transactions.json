@@ -1,1 +1,26 @@
-[]
+[
+    {
+        "amount": -50.0,
+        "description": "Water bill",
+        "date": "2026-01-11 14:44:22",
+        "category": "EXPENSE"
+    },
+    {
+        "amount": -50.0,
+        "description": "Gas bill",
+        "date": "2026-01-11 14:44:35",
+        "category": "EXPENSE"
+    },
+    {
+        "amount": 5000.0,
+        "description": "Salary",
+        "date": "2026-01-11 14:45:12",
+        "category": "INCOME"
+    },
+    {
+        "amount": -1500.0,
+        "description": "Rent",
+        "date": "2026-01-11 14:45:28",
+        "category": "EXPENSE"
+    }
+]

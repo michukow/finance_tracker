@@ -1,6 +1,8 @@
 # Personal finance tracker - work in progres
 import json
+import matplotlib.pyplot as plt
 from datetime import datetime
+
 
 class Transaction:
 	def __init__(self,amount,description,date,category):
@@ -18,18 +20,24 @@ class Transaction:
 def add():
 	print("Adding transaction...")
 	while True:
-		amount=float(input("Amount: "))
-		if amount==0 or not amount:
-			print("Insert valid amount")
-			continue 
-		break
+		try:
+			amount=float(input("Amount: "))
+			if amount==0:
+				print("Insert valid amount.")
+				continue 
+			break
+		except ValueError:
+			print("Insert a number.")
 
-	while True:		
-		description=input("Description: ")
-		if description=="":
-			print("The description should not be empty.")
-			continue
-		break
+	while True:
+		try:
+			description=input("Description: ")
+			if description=="":
+				print("The description should not be empty.")
+				continue
+			break
+		except ValueError:
+			print("Insert a number.")
 
 	date=datetime.now()
 	date=date.strftime("%Y-%m-%d %H:%M:%S")
@@ -118,8 +126,9 @@ def delete():
 			with open("transactions.json","w",encoding="utf-8") as file:
 				json.dump(data,file,indent=4,ensure_ascii=False)
 
-				transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
-				print(f"Transaction was removed")
+				for i,t in enumerate(data,start=1):
+					transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+				print(f"Transaction was removed.")
 
 		except FileNotFoundError:
 			print("File not found.")
@@ -127,13 +136,31 @@ def delete():
 	except FileNotFoundError:
 		print("File not found.")
 
-#def csv_export():
-	#try:
-		#with open('transactions.json','w',encoding='utf-8') as file:
+def chart():
+	incomes=[]
+	expenses=[]
+	with open("transactions.json","r",encoding="utf-8") as file:
+		data=json.load(file)
+		if not data:
+			print("Chart can not be drawn.")
+			return
 
-	#except FileNotFoundError:
-		#print("File not found.")
+		for t in data:
+			if t["amount"]>0:
+				incomes.append(t["amount"])
+			else:
+				expenses.append(abs(t["amount"]))
 
+	total_income=sum(incomes)
+	total_expense=sum(expenses)
+
+	labels=["Income","Expenses"]
+	values=[total_income,total_expense]
+
+	plt.bar(labels,values)
+	plt.title("Income vs Expenses")
+	plt.ylabel("Amount")
+	plt.show()
 
 def main():
 	while True:
@@ -143,7 +170,8 @@ def main():
 		print("2. Show transactions")
 		print("3. Show balance")
 		print("4. Delete transaction")
-		print("5. Exit")
+		print("5. Draw the chart")
+		print("6. Exit")
 		print()
 
 		choice=str(input("Choose option: "))
@@ -157,7 +185,8 @@ def main():
 		elif choice=="4":
 			delete()
 		elif choice=="5":
-			print("Exiting.")
+			chart()
+		elif choice=="6":
 			break
 		else:
 			print("Invalid option. Try again! \n")
