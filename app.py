@@ -136,6 +136,8 @@ def delete():
 	except FileNotFoundError:
 		print("File not found.")
 
+
+
 def chart():
 	incomes=[]
 	expenses=[]

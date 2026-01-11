@@ -1,4 +1,4 @@
-# PERSONAL FINANCE TRACKER (ALFA RELEASE)
+# PERSONAL FINANCE TRACKER (BETA RELEASE)
 
 Simple personal finance tracker. 
 Work in progress
@@ -6,6 +6,7 @@ Work in progress
 ## Technologies
 - Python (Classes)
 - JSON
+- matplotlib
 
 ## Features
 - adding transactions
@@ -13,3 +14,4 @@ Work in progress
 - showing list of transactions
 - deleting specific transaction
 - checking current balance
+- drawing a simple chart
