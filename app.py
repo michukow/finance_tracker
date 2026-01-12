@@ -4,65 +4,91 @@ import json
 import matplotlib.pyplot as plt
 from datetime import datetime
 
-
 class Transaction:
-	def __init__(self,amount,description,date,type):
-		self.amount=amount
+	def __init__(self,type,amount,category,description,date):
+		self.type=type
+		self.amount=amount 
+		self.category=category
 		self.description=description
 		self.date=date
-		self.type=type
 
 	def to_dict(self):
 		return self.__dict__
 
 	def info(self):
-		print(f"{self.type} || {self.amount} | {self.description} | {self.date}")
+		print(f"{self.type} || {self.amount} | {self.category} | {self.description} | {self.date}")
 
 def add():
-	print("Adding transaction...")
-	while True:
-		try:
-			amount=float(input("Amount: "))
-			if amount==0:
-				print("Insert valid amount.")
-				continue 
-			break
-		except ValueError:
-			print("Insert a number.")
+    print("Adding transaction...")
 
-	while True:
-		try:
-			description=input("Description: ")
-			if description=="":
-				print("The description should not be empty.")
-				continue
-			break
-		except ValueError:
-			print("Insert a number.")
+    while True:
+        try:
+            amount=float(input("Amount: "))
+            if amount==0:
+                print("Amount cannot be zero.")
+                continue
+            break
+        except ValueError:
+            print("Insert a valid number.")
+    while True:
+        description=input("Description: ").strip()
+        if description=="":
+            print("Description cannot be empty.")
+        else:
+            break
 
-	date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if amount>0:
+        type="INCOME"
+        categories={
+            "1": "Salary",
+            "2": "Business",
+            "3": "Investment",
+            "4": "Refund",
+            "5": "Scholarship",
+            "6": "Other"
+        }
+    else:
+        type="EXPENSE"
+        categories={
+            "1": "Food",
+            "2": "Rent",
+            "3": "Home",
+            "4": "Transport",
+            "5": "Fun & Hobby",
+            "6": "Other"
+        }
 
-	if amount>0:
-		type="INCOME"
-	else:
-		type="EXPENSE"
+    print("\nSelect category:")
+    for k, v in categories.items():
+        print(f"{k} - {v}")
 
-	transaction=Transaction(amount,description,date,type)
+    while True:
+        choice=input("Category number: ")
+        if choice in categories:
+            category=categories[choice]
+            break
+        else:
+            print("Select a valid category number.")
 
-	try:
-		with open("transactions.json","r",encoding="utf-8") as file:
-			data=json.load(file)
-			if not isinstance(data, list):
-				data=[]
-	except FileNotFoundError:
-		data=[]
-	data.append(transaction.to_dict())
-	try:
-		with open("transactions.json","w",encoding="utf-8") as file:
-			json.dump(data,file,indent=4,ensure_ascii=False)
-		print("Transaction added.\n")
-	except FileNotFoundError:
-		print("File not found.")
+    date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    transaction=Transaction(type,amount,category,description,date)
+
+    try:
+        with open("transactions.json","r",encoding="utf-8") as file:
+            data=json.load(file)
+            if not isinstance(data,list):
+                data=[]
+    except FileNotFoundError:
+        data=[]
+
+    data.append(transaction.to_dict())
+
+    with open("transactions.json","w",encoding="utf-8") as file:
+        json.dump(data,file,indent=4,ensure_ascii=False)
+
+    print("Transaction added successfully.")
+
 
 def show():
 	print("Showing transactions...")
@@ -75,7 +101,7 @@ def show():
 			return
 
 		for i,t in enumerate(data,start=1):
-			transaction=Transaction(t["amount"],t["description"],t["date"],t["type"])
+			transaction=Transaction(t["type"],t["amount"],t["category"],t["description"],t["date"])
 			print(f"{i}. ",end="")
 			transaction.info()
 
@@ -107,7 +133,7 @@ def delete():
             return
 
         for i, t in enumerate(data,start=1):
-            transaction=Transaction(t["amount"],t["description"],t["date"],t["type"])
+            transaction=Transaction(t["type"],t["amount"],t["category"],t["description"],t["date"])
             print(f"{i}. ",end="")
             transaction.info()
 
@@ -141,7 +167,7 @@ def update():
             return
 
         for i,t in enumerate(data,start=1):
-            transaction=Transaction(t["amount"],t["description"],t["date"],t["type"])
+            transaction=Transaction(t["type"],t["amount"],t["category"],t["description"],t["date"])
             print(f"{i}. ",end="")
             transaction.info()
 
