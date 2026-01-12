@@ -16,9 +16,9 @@
     {
         "type": "INCOME",
         "amount": 5000.0,
-        "category": "Salary",
-        "description": "Salary",
-        "date": "2026-01-11 14:45:12"
+        "category": "Business",
+        "description": "January business profit",
+        "date": "2026-01-12 10:52:03"
     },
     {
         "type": "EXPENSE",

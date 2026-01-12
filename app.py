@@ -192,6 +192,39 @@ def update():
                 print("Invalid amount.")
                 return
 
+        if old["type"]=="INCOME":
+            categories={
+                "1": "Salary",
+                "2": "Business",
+                "3": "Investment",
+                "4": "Refund",
+                "5": "Scholarship",
+                "6": "Other"
+            }
+        else:
+            categories={
+                "1": "Food",
+                "2": "Rent",
+                "3": "Home",
+                "4": "Transport",
+                "5": "Fun & Hobby",
+                "6": "Other"
+            }
+
+        print("Updating category...")
+        print("Select category:")
+        for k, v in categories.items():
+            print(f"{k} - {v}")
+
+        while True:
+            choice=input("Insert category number or press Enter to keep: ")
+            if choice in categories:
+                category=categories[choice]
+                old["category"]=category
+                break
+            else:
+                print("Select a valid category number.")
+
 
         new_description=input("New description OR press Enter to keep: ")
         if new_description!="":
