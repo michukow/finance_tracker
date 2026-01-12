@@ -1,21 +1,22 @@
-# Personal finance tracker - work in progres
+# Personal finance tracker - work in progress
+
 import json
 import matplotlib.pyplot as plt
 from datetime import datetime
 
 
 class Transaction:
-	def __init__(self,amount,description,date,category):
+	def __init__(self,amount,description,date,type):
 		self.amount=amount
 		self.description=description
 		self.date=date
-		self.category=category
+		self.type=type
 
 	def to_dict(self):
 		return self.__dict__
 
 	def info(self):
-		print(f"{self.category} || {self.amount} | {self.description} | {self.date}")
+		print(f"{self.type} || {self.amount} | {self.description} | {self.date}")
 
 def add():
 	print("Adding transaction...")
@@ -42,11 +43,11 @@ def add():
 	date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 	if amount>0:
-		category="INCOME"
+		type="INCOME"
 	else:
-		category="EXPENSE"
+		type="EXPENSE"
 
-	transaction=Transaction(amount,description,date,category)
+	transaction=Transaction(amount,description,date,type)
 
 	try:
 		with open("transactions.json","r",encoding="utf-8") as file:
@@ -74,7 +75,7 @@ def show():
 			return
 
 		for i,t in enumerate(data,start=1):
-			transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+			transaction=Transaction(t["amount"],t["description"],t["date"],t["type"])
 			print(f"{i}. ",end="")
 			transaction.info()
 
@@ -102,11 +103,11 @@ def delete():
             data=json.load(file)
 
         if not data:
-            print("No transactions.")
+            print("No transactions yet.")
             return
 
         for i, t in enumerate(data,start=1):
-            transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+            transaction=Transaction(t["amount"],t["description"],t["date"],t["type"])
             print(f"{i}. ",end="")
             transaction.info()
 
@@ -140,7 +141,7 @@ def update():
             return
 
         for i,t in enumerate(data,start=1):
-            transaction=Transaction(t["amount"],t["description"],t["date"],t["category"])
+            transaction=Transaction(t["amount"],t["description"],t["date"],t["type"])
             print(f"{i}. ",end="")
             transaction.info()
 
@@ -160,7 +161,7 @@ def update():
         if new_amount!= "":
             try:
                 old["amount"]=float(new_amount)
-                old["category"]="INCOME" if old["amount"]>0 else "EXPENSE"
+                old["type"]="INCOME" if old["amount"]>0 else "EXPENSE"
             except ValueError:
                 print("Invalid amount.")
                 return
@@ -186,6 +187,7 @@ def chart():
 	expenses=[]
 	with open("transactions.json","r",encoding="utf-8") as file:
 		data=json.load(file)
+
 		if not data:
 			print("Chart can not be drawn.")
 			return
