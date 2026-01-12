@@ -240,8 +240,29 @@ def update():
     except FileNotFoundError:
         print("File not found.")
 
+def month_report():
+	incomes=[]
+	expenses=[]
+	print()
+	print("Generating moth report...")
+	with open("transactions.json","r",encoding="utf-8") as file:
+		data=json.load(file)
 
-def chart():
+		for t in data:
+			if t["amount"]>0:
+				incomes.append(t["amount"])
+			else:
+				expenses.append(abs(t["amount"]))
+
+		total_income=sum(incomes)
+		total_expense=sum(expenses)
+
+		print(f"Income: {total_income}")
+		print(f"Expenses: {total_expense}")
+		print("---------------")
+		print(f"Net: {total_income-total_expense}")
+
+def general_chart():
 	incomes=[]
 	expenses=[]
 	with open("transactions.json","r",encoding="utf-8") as file:
@@ -277,8 +298,9 @@ def main():
 		print("3. Show balance")
 		print("4. Delete transaction")
 		print("5. Update specific transaction")
-		print("6. Draw the chart")
-		print("7. Exit")
+		print("6. Generate month report")
+		print("7. Draw the chart")
+		print("8. Exit")
 		print()
 
 		choice=str(input("Choose option: "))
@@ -294,8 +316,10 @@ def main():
 		elif choice=="5":
 			update()
 		elif choice=="6":
-			chart()
+			month_report()
 		elif choice=="7":
+			general_chart()
+		elif choice=="8":
 			break
 		else:
 			print("Invalid option. Try again! \n")
