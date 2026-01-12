@@ -4,9 +4,10 @@ Simple personal finance tracker.
 Work in progress
 
 ## Technologies
-- Python (Classes)
+- Python
 - JSON
 - matplotlib
+- datetime
 
 ## Features
 - adding transactions
@@ -14,4 +15,5 @@ Work in progress
 - showing list of transactions
 - deleting specific transaction
 - checking current balance
+- report for specific month and year
 - drawing a simple chart
