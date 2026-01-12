@@ -1,7 +1,3 @@
-# Personal finance tracker - work in progress
-# motywy inwestycji bezpośrednich: dostęp do zasoboów, rybku zbytu, przejęcie strategiczneog aktywa (np. tehcnologii), poprawa efektwyności
-#co njamniej 5 lat, 10% <- economics classes
-
 import json
 import matplotlib.pyplot as plt
 from datetime import datetime
@@ -264,7 +260,7 @@ def month_report():
 
 	for t in data:
 		if t["date"].startswith(f"{year}-{month}"):
-			if t["amount"] > 0:
+			if t["amount"]>0:
 				incomes.append(t["amount"])
 			else:
 				expenses.append(abs(t["amount"]))
@@ -284,7 +280,7 @@ def general_chart():
 		data=json.load(file)
 
 		if not data:
-			print("Chart can not be drawn.")
+			print("General chart can not be shown.")
 			return
 
 		for t in data:
@@ -304,6 +300,43 @@ def general_chart():
 	plt.ylabel("Amount")
 	plt.show()
 
+def month_chart():
+	expenses=[]
+	labels=[]
+	category_totals={}
+	
+	while True:
+		try:
+			month=input("Insert number of month: ")
+			year=input("Insert a year: ")
+			if year=="" or int(year)<0 or int(month)<1 or int(month)>12 or month=="":
+				continue
+			break
+		except ValueError:
+			print("Insert valid number of year or month.")
+
+	if not month.startswith("0") and int(month)<10:
+		month="0"+month
+
+	with open("transactions.json","r",encoding="utf-8") as file:
+		data=json.load(file)
+
+		if not data:
+			print("Month char can not be shown.")
+
+		for t in data:
+			if t["date"].startswith(f"{year}-{month}") and t["amount"]<0:
+				if t["category"] in category_totals:
+					category_totals[t["category"]]+=abs(t["amount"])
+				else:
+					category_totals[t["category"]]=abs(t["amount"])
+
+	labels=list(category_totals.keys())
+	y=list(category_totals.values())
+
+	plt.pie(y,labels=labels,autopct="%1.1f%%")
+	plt.show()
+
 def main():
 	while True:
 		print()
@@ -314,8 +347,9 @@ def main():
 		print("4. Delete transaction")
 		print("5. Update specific transaction")
 		print("6. Generate month report")
-		print("7. Draw the chart")
-		print("8. Exit")
+		print("7. Draw the month chart with categories")
+		print("8. Draw the chart")
+		print("9. Exit")
 		print()
 
 		choice=str(input("Choose option: "))
@@ -333,8 +367,10 @@ def main():
 		elif choice=="6":
 			month_report()
 		elif choice=="7":
-			general_chart()
+			month_chart()
 		elif choice=="8":
+			general_chart()
+		elif choice=="9":
 			break
 		else:
 			print("Invalid option. Try again! \n")

@@ -16,8 +16,7 @@ Work in progress
 - deleting specific transaction
 - checking current balance
 - report for specific month and year
-- drawing a simple chart
-
+- drawing a simple chart: general and for specific month and category
 
 ## Updates
-1.0 -> CRUD + month report, chart
+1.0 -> CRUD + month report, general chart+month
