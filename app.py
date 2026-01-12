@@ -1,4 +1,6 @@
 # Personal finance tracker - work in progress
+# motywy inwestycji bezpośrednich: dostęp do zasoboów, rybku zbytu, przejęcie strategiczneog aktywa (np. tehcnologii), poprawa efektwyności
+#co njamniej 5 lat, 10% <- economics classes
 
 import json
 import matplotlib.pyplot as plt
