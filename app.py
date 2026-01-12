@@ -243,24 +243,37 @@ def update():
 def month_report():
 	incomes=[]
 	expenses=[]
+	while True:
+		try:
+			month=input("Insert number of month: ")
+			year=input("Insert a year: ")
+			if year=="" or int(year)<0 or int(month)<1 or int(month)>12 or month=="":
+				continue
+			break
+		except ValueError:
+			print("Insert valid number of year or month.")
+
+	if not month.startswith("0") and int(month)<10:
+		month="0"+month
+	print(f"Generating month report {month}-{year}")
 	print()
-	print("Generating moth report...")
 	with open("transactions.json","r",encoding="utf-8") as file:
 		data=json.load(file)
 
-		for t in data:
-			if t["amount"]>0:
+	for t in data:
+		if t["date"].startswith(f"{year}-{month}"):
+			if t["amount"] > 0:
 				incomes.append(t["amount"])
 			else:
 				expenses.append(abs(t["amount"]))
 
-		total_income=sum(incomes)
-		total_expense=sum(expenses)
+	total_income=sum(incomes)
+	total_expense=sum(expenses)
 
-		print(f"Income: {total_income}")
-		print(f"Expenses: {total_expense}")
-		print("---------------")
-		print(f"Net: {total_income-total_expense}")
+	print(f"Income: {total_income}")
+	print(f"Expenses: {total_expense}")
+	print("---------------")
+	print(f"Net: {total_income-total_expense}")
 
 def general_chart():
 	incomes=[]
