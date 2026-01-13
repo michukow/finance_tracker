@@ -56,7 +56,7 @@ def add():
             "6": "Other"
         }
 
-    print("\nSelect category:")
+    print("\nSelect category: ")
     for k, v in categories.items():
         print(f"{k} - {v}")
 
@@ -161,7 +161,7 @@ def update():
             data=json.load(file)
 
         if not data:
-            print("No transactions.")
+            print("No transactions yet.")
             return
 
         for i,t in enumerate(data,start=1):
